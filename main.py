@@ -226,6 +226,16 @@ cursor.execute('''
 ''')
 conn.commit()
 
+try:
+    cursor.execute("ALTER TABLE users ADD COLUMN name TEXT")
+    conn.commit()
+except: pass
+
+try:
+    cursor.execute("ALTER TABLE users ADD COLUMN username TEXT")
+    conn.commit()
+except: pass
+
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS allowed_tags (
         tag_name TEXT PRIMARY KEY
