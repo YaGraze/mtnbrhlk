@@ -1,0 +1,13 @@
+python-dotenv
+aiogram==3.25.0
+openai
+requests==2.31.0
+apscheduler
+pytz
+yt-dlp
+feedparser
+beautifulsoup4
+
+
+
+

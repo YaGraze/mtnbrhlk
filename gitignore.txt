@@ -1,0 +1,6 @@
+data/database.db
+data/duels.json
+data/silent_users.json
+data/tagged_users.json
+data/manifest.sqlite
+data/
