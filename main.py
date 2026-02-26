@@ -500,8 +500,6 @@ def get_top_users():
     except Exception:
         return [], []
 
-ACTIVE_DUELS = load_duels()
-
 #-------------------------------------------------------------------------------------------------------------------ОБЩИЕ ФУНКЦИИ
             
 def clean_log_text(text):
