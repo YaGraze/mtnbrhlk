@@ -227,6 +227,14 @@ cursor.execute('''
 conn.commit()
 
 try:
+    # Если репутация пустая, ставим 0
+    cursor.execute("UPDATE users SET reputation = 0 WHERE reputation IS NULL")
+    # Если имя пустое, ставим заглушку
+    cursor.execute("UPDATE users SET name = 'Страж' WHERE name IS NULL")
+    conn.commit()
+except: pass
+
+try:
     cursor.execute("ALTER TABLE users ADD COLUMN name TEXT")
     conn.commit()
 except: pass
@@ -1078,6 +1086,14 @@ async def rep_stats_command(message: types.Message):
     text = "<tg-emoji emoji-id='5325547803936572038'>✨</tg-emoji> <b>АУРА</b>\n\n"
     
     text += "<tg-emoji emoji-id='5244837092042750681'>📈</tg-emoji> <b>Лучшие:</b>\n"
+    if best:
+        for uid, name, rep in best:
+            # Защита от пустого имени
+            display_name = name if name else "Страж"
+            # Защита от пустой репутации
+            display_rep = rep if rep is not None else 0
+            
+            text += f"• <a href='tg://user?id={uid}'>{display_name}</a>: <b>{display_rep}</b>\n"
     for uid, name, rep in best:
         text += f"• <a href='tg://user?id={uid}'>{name}</a>: <b>{rep}</b>\n"
         
@@ -2424,6 +2440,11 @@ async def moderate_and_chat(message: types.Message):
             is_thx = any(msg_lower.startswith(w) for w in thx_words)
             
             if is_thx:
+                try:
+                    cursor.execute('INSERT OR IGNORE INTO users (user_id) VALUES (?)', (target.id,))
+                    cursor.execute('UPDATE users SET name = ? WHERE user_id = ?', (target.first_name, target.id))
+                    conn.commit()
+                except: pass
                 # --- ПРОВЕРКА КД ---
                 if not check_upvote_cooldown(attacker.id):
                     # Вычисляем сколько осталось
