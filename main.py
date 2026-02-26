@@ -1281,7 +1281,7 @@ async def list_chats_command(message: types.Message):
 
 @dp.message(Command("chat_stats"))
 async def chat_stats_command(message: types.Message):
-    top_chatters, top_rating, top_rep = get_top_users()
+    top_chatters, top_rep = get_top_users()
     
     text = "<tg-emoji emoji-id='5350305691942788490'>📈</tg-emoji> <b>СТАТИСТИКА ЧАТА</b>\n\n"
     
